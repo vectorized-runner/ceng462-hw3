@@ -1,9 +1,12 @@
 def parse_file(file_name):
-    return -1
+    f = open(file_name, "r")
+    lines = f.readlines()
+    return lines[0]
 
 
 def SolveGame(method_name, problem_file_name, player_type):
     state = parse_file(problem_file_name)
+    print(state)
 
     if method_name == "Minimax":
         minimax_nim(state)
@@ -29,6 +32,5 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    SolveGame("Minimax", "nim1.txt", "MAX")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
