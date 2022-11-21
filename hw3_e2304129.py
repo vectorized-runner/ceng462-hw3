@@ -29,48 +29,48 @@ def minimax_nim(state, is_max):
     return [correct_action, iterations - 1]
 
 
-def minimax_nim_impl(state, is_max, iterations, list_until):
+def minimax_nim_impl(state, is_max, iterations, path):
     iterations = iterations + 1
-    list_until.append(state)
+    path.append(state)
 
     if state == (0, 0, 0):
         if is_max:
-            return 1, iterations, list_until
+            return 1, iterations, path
         else:
-            return -1, iterations, list_until
+            return -1, iterations, path
 
     if is_max:
         children = get_children(state)
         max_utility = -10000
-        max_until = None
+        max_path = None
         child_is_max = not is_max
 
         for child in children:
-            utility, child_iter, until = minimax_nim_impl(child, child_is_max, 0, [])
+            utility, child_iter, child_path = minimax_nim_impl(child, child_is_max, 0, [])
             iterations += child_iter
             if utility > max_utility:
-                max_until = until
+                max_path = child_path
                 max_utility = utility
 
-        list_until.extend(max_until)
+        path.extend(max_path)
 
-        return max_utility, iterations, max_until
+        return max_utility, iterations, max_path
     else:
         children = get_children(state)
         min_utility = 10000
-        min_until = None
+        min_path = None
         child_is_max = not is_max
 
         for child in children:
-            child_util, child_iter, child_until = minimax_nim_impl(child, child_is_max, 0, [])
+            child_util, child_iter, child_path = minimax_nim_impl(child, child_is_max, 0, [])
             iterations += child_iter
             if child_util < min_utility:
-                min_until = child_until
+                min_path = child_path
                 min_utility = child_util
 
-        list_until.extend(min_until)
+        path.extend(min_path)
 
-        return min_utility, iterations, list_until
+        return min_utility, iterations, path
 
     return -1
 
