@@ -99,8 +99,6 @@ def get_children(state):
 def minimax_alphabeta(state, is_max):
     utility, iterations, search = minimax_alphabeta_impl(state, is_max, 0, [], -10000, 10000)
 
-    print(search)
-
     # Correct action is the search[0]
     correct_action = search[0]
     # Run algorithm with correct action to find the iterations for that path
@@ -160,9 +158,3 @@ def minimax_alphabeta_impl(state, is_max, iterations, path, alpha, beta):
 
     return -1
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    # SolveGame("Minimax", "nim1.txt", "MAX")
-    res = minimax_alphabeta((1, 2, 4, 5), True)
-    print(res)
