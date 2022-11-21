@@ -9,8 +9,6 @@ def SolveGame(method_name, problem_file_name, player_type):
     state = parse_file(problem_file_name)
     is_max = player_type == "MAX"
 
-    print(f"state: {state}")
-
     if method_name == "Minimax":
         return minimax_nim(state, is_max)
     elif method_name == "AlphaBeta":
@@ -102,14 +100,8 @@ def minimax_alphabeta(state):
     return
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # SolveGame("Minimax", "nim1.txt", "MAX")
     res = minimax_nim((1, 3, 5), True)
-    print(res)
 # print(res)
