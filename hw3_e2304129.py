@@ -126,15 +126,15 @@ def minimax_alphabeta_impl(state, is_max, iterations, path, alpha, beta):
         child_is_max = not is_max
 
         for child in children:
-            alpha = max(alpha, max_utility)
             child_util, child_iter, child_path = minimax_alphabeta_impl(child, child_is_max, 0, [], alpha, beta)
             iterations += child_iter
 
             if child_util > max_utility:
                 max_path = child_path
                 max_utility = child_util
-            if max_utility >= beta:
-                break
+                alpha = max(alpha, max_utility)
+                if alpha >= beta:
+                    break
 
         path.extend(max_path)
         return max_utility, iterations, max_path
@@ -145,15 +145,15 @@ def minimax_alphabeta_impl(state, is_max, iterations, path, alpha, beta):
         child_is_max = not is_max
 
         for child in children:
-            beta = min(beta, min_utility)
             child_util, child_iter, child_path = minimax_alphabeta_impl(child, child_is_max, 0, [], alpha, beta)
             iterations += child_iter
 
             if child_util < min_utility:
                 min_path = child_path
                 min_utility = child_util
-            if min_utility <= alpha:
-                break
+                beta = min(beta, min_utility)
+                if beta <= alpha:
+                    break
 
         path.extend(min_path)
         return min_utility, iterations, path
