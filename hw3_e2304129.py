@@ -6,20 +6,27 @@ def parse_file(file_name):
 
 def SolveGame(method_name, problem_file_name, player_type):
     state = parse_file(problem_file_name)
-    print(state)
+    is_max = player_type == "MAX"
+
+    print(f"state: {state}")
 
     if method_name == "Minimax":
-        return minimax_nim(state)
+        return minimax_nim(state, is_max)
     elif method_name == "AlphaBeta":
-        return minimax_alphabeta(state)
+        return minimax_alphabeta(state, is_max)
     else:
         print("Error: unexpected method name")
     return
 
 
-def minimax_nim(state):
-    res = minimax_nim_impl(state, True, 0, [])
-    return res
+def minimax_nim(state, is_max):
+    utility, iterations, search = minimax_nim_impl(state, is_max, 0, [])
+
+    # Correct action is the search[0]
+    correct_action = search[0]
+    _, iterations, _ = minimax_nim_impl(correct_action, not is_max, 0, [])
+
+    return [correct_action, iterations - 1]
 
 
 def minimax_nim_impl(state, is_max, iterations, list_until):
@@ -36,35 +43,31 @@ def minimax_nim_impl(state, is_max, iterations, list_until):
         children = get_children(state)
         max_utility = -10000
         max_until = None
-        max_iterations = None
         child_is_max = not is_max
 
         for child in children:
-            utility, child_iter, until = minimax_nim_impl(child, child_is_max, iterations, [])
+            utility, child_iter, until = minimax_nim_impl(child, child_is_max, 0, [])
+            iterations += child_iter
             if utility > max_utility:
-                max_iterations = child_iter
                 max_until = until
                 max_utility = utility
 
-        iterations = iterations + max_iterations
         list_until.extend(max_until)
 
         return max_utility, iterations, max_until
     else:
         children = get_children(state)
         min_utility = 10000
-        min_iterations = None
         min_until = None
         child_is_max = not is_max
 
         for child in children:
-            child_util, child_iter, child_until = minimax_nim_impl(child, child_is_max, iterations, [])
+            child_util, child_iter, child_until = minimax_nim_impl(child, child_is_max, 0, [])
+            iterations += child_iter
             if child_util < min_utility:
-                min_iterations = child_iter
                 min_until = child_until
                 min_utility = child_util
 
-        iterations = iterations + min_iterations
         list_until.extend(min_until)
 
         return min_utility, iterations, list_until
@@ -100,8 +103,6 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # SolveGame("Minimax", "nim1.txt", "MAX")
-
-    res = minimax_nim([1, 3, 5])
-
+    res = minimax_nim((1, 3, 5), True)
     print(res)
 # print(res)
