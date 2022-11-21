@@ -31,11 +31,18 @@ def minimax_nim(state, is_max):
     return [correct_action, iterations - 1]
 
 
+def is_zero(tpl):
+    for x in range(len(tpl)):
+        if tpl[x] != 0:
+            return False
+    return True
+
+
 def minimax_nim_impl(state, is_max, iterations, path):
     iterations = iterations + 1
     path.append(state)
 
-    if state == (0, 0, 0):
+    if is_zero(state):
         if is_max:
             return 1, iterations, path
         else:
