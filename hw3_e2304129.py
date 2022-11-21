@@ -55,11 +55,11 @@ def minimax_nim_impl(state, is_max, iterations, path):
         child_is_max = not is_max
 
         for child in children:
-            utility, child_iter, child_path = minimax_nim_impl(child, child_is_max, 0, [])
+            child_util, child_iter, child_path = minimax_nim_impl(child, child_is_max, 0, [])
             iterations += child_iter
-            if utility > max_utility:
+            if child_util > max_utility:
                 max_path = child_path
-                max_utility = utility
+                max_utility = child_util
 
         path.extend(max_path)
 
