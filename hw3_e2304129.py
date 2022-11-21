@@ -79,16 +79,14 @@ def minimax_nim_impl(state, is_max, iterations, path):
 
 def get_children(state):
     res = []
-    ox, oy, oz = state
 
-    for x in range(ox):
-        res.append((x, oy, oz))
-
-    for y in range(oy):
-        res.append((ox, y, oz))
-
-    for z in range(oz):
-        res.append((ox, oy, z))
+    # tuple length
+    for i in range(len(state)):
+        # 0 to variable value
+        for item in range(state[i]):
+            copy = list(state)
+            copy[i] = item
+            res.append(tuple(copy))
 
     return res
 
