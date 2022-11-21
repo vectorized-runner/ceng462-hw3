@@ -24,6 +24,7 @@ def minimax_nim(state, is_max):
 
     # Correct action is the search[0]
     correct_action = search[0]
+    # Run algorithm with correct action to find the iterations for that path
     _, iterations, _ = minimax_nim_impl(correct_action, not is_max, 0, [])
 
     return [correct_action, iterations - 1]
