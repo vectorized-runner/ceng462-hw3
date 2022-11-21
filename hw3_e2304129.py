@@ -1,7 +1,8 @@
 def parse_file(file_name):
     f = open(file_name, "r")
     lines = f.readlines()
-    return lines[0]
+    line = eval(lines[0])
+    return tuple(line)
 
 
 def SolveGame(method_name, problem_file_name, player_type):
