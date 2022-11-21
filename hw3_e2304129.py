@@ -96,12 +96,76 @@ def get_children(state):
     return res
 
 
-def minimax_alphabeta(state):
-    return
+def minimax_alphabeta(state, is_max):
+    utility, iterations, search = minimax_alphabeta_impl(state, is_max, 0, [], -10000, 10000)
+
+    print(search)
+
+    # Correct action is the search[0]
+    correct_action = search[0]
+    # Run algorithm with correct action to find the iterations for that path
+    _, iterations, _ = minimax_alphabeta_impl(correct_action, not is_max, 0, [], -10000, 10000)
+
+    return [correct_action, iterations - 1]
+
+
+def minimax_alphabeta_impl(state, is_max, iterations, path, alpha, beta):
+    iterations = iterations + 1
+    path.append(state)
+
+    if is_zero(state):
+        if is_max:
+            return 1, iterations, path
+        else:
+            return -1, iterations, path
+
+    if is_max:
+        children = get_children(state)
+        max_utility = -10000
+        max_path = None
+        child_is_max = not is_max
+
+        for child in children:
+            child_util, child_iter, child_path = minimax_alphabeta_impl(child, child_is_max, 0, [], alpha, beta)
+            iterations += child_iter
+            if child_util > max_utility:
+                max_path = child_path
+                max_utility = child_util
+
+            alpha = max(alpha, max_utility)
+
+            if max_utility >= beta:
+                break
+
+        path.extend(max_path)
+        return max_utility, iterations, max_path
+    else:
+        children = get_children(state)
+        min_utility = 10000
+        min_path = None
+        child_is_max = not is_max
+
+        for child in children:
+            child_util, child_iter, child_path = minimax_alphabeta_impl(child, child_is_max, 0, [], alpha, beta)
+            iterations += child_iter
+
+            if child_util < min_utility:
+                min_path = child_path
+                min_utility = child_util
+
+            beta = min(beta, min_utility)
+
+            if min_utility <= alpha:
+                break
+
+        path.extend(min_path)
+        return min_utility, iterations, path
+
+    return -1
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     # SolveGame("Minimax", "nim1.txt", "MAX")
-    res = minimax_nim((1, 3, 5), True)
-# print(res)
+    res = minimax_alphabeta((1, 2, 4, 5), True)
+    print(res)
